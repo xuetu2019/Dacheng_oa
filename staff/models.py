@@ -18,20 +18,4 @@ class Staff(models.Model):
         db_table = 'staff'
 
 
-    #def __str__(self):
-        #return self.title #后台管理时显示书名
-
-
-# class Athur(models.Model):
-#     name = models.CharField(max_length=30) #varchar(30),加索引
-#     age = models.IntegerField(null=True)
-#     email = models.EmailField(null=True)
-#
-#     def __str__(self):
-#         return self.name #后台管理时显示书名
-#     #2，厉害的方法ModelAdin
-#
-#
-# class Wife(models.Model):#想要在管理页面出现，还要去admin.py中设置
-#     name = models.CharField(max_length=30) #varchar(30)
-#     author = models.OneToOneField(Athur)#数据表李会有author_id字段且唯一
+    
