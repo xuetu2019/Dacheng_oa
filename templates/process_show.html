@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="/static/css/font.css">
+        <link rel="stylesheet" href="/static/css/xadmin.css">
+        <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="/static/js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+
+                        <div class="layui-card-header">
+                            <button class="layui-btn" onclick="xadmin.open('添加用户','add_process',800,600)">
+                                <i class="layui-icon"></i>添加</button></div>
+                        <div class="layui-card-body ">
+                            <table class="layui-table layui-form">
+                                <thead>
+                                    <tr>
+                                        <th>发起人</th>
+                                        <th>发起时间</th>
+                                        <th>流程内容</th>
+                                        <th>分管领导批示</th>
+                                        <th>总经理批示</th>
+                                        <th>最近审批时间</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for re in process %}
+                                    <tr>
+                                        <td>{{re.admin_id}}</td>
+                                        <td>{{re.created}}</td>
+                                        <td>{{re.process}}</td>
+                                        {%if re.cto_check %}
+                                        <td>{{re.cto_check}}</td>
+                                        {% else %}
+                                        <td><button id="CTO_check" onclick="check({{re.id}},'{{admin}}','CTO')">未审批</button></td>
+                                        {% endif %}
+
+                                        {%if re.ceo_check %}
+                                        <td>{{re.ceo_check}}</td>
+                                        {% else %}
+                                        <td><button id="CEO_check" onclick="check({{re.id}},'{{admin}}','CEO')">未审批</button></td>
+                                        {% endif %}
+
+                                        <td>{{re.modified}}</td>
+                                        <td class="td-manage">
+                                            <a title="查看" onclick="xadmin.open('审批','process_check/{{re.id}}')" href="javascript:;">
+                                                <i class="layui-icon">&#xe63c;</i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="layui-card-body ">
+                            <div class="page">
+                                <div>
+                                    <a class="prev" href="">&lt;&lt;</a>
+                                    <a class="num" href="">1</a>
+                                    <span class="current">2</span>
+                                    <a class="num" href="">3</a>
+                                    <a class="num" href="">489</a>
+                                    <a class="next" href="">&gt;&gt;</a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+            function check(id,re,role) {
+                $.ajax({
+                    type:"post",
+                    dataType:"Json",
+                    url:'/process/process_check/'+id+'?role='+role,
+                    data:{data:re+'同意'},
+                    success:function (result) {
+                        if (200 == result.code){
+                            alert('审批成功')
+                            location.reload()
+                        }
+                    }
+
+                })
+            }
+    </script>
+</html>
